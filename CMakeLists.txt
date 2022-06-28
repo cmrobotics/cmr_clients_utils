@@ -26,4 +26,41 @@ include_directories(include
   ${rclcpp_action_INCLUDE_DIRS}
 )
 
+
+set(LIBRARY_NAME "${PROJECT_NAME}_lib")
+
+add_library(${LIBRARY_NAME} INTERFACE)
+
+target_include_directories(${LIBRARY_NAME} INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_link_libraries(${LIBRARY_NAME} INTERFACE
+  ${rclcpp_LIBRARIES}
+  ${rclcpp_action_LIBRARIES}
+)
+
+install(TARGETS ${LIBRARY_NAME}
+  EXPORT "export_${PROJECT_NAME}"
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib
+  INCLUDES DESTINATION include
+)
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}
+)
+
+set(dependencies
+  "rclcpp"
+  "rclcpp_action"
+)
+
+# ament_export_libraries(${LIBRARY_NAME} INTERFACE)
+ament_export_include_directories(include)
+ament_export_dependencies(${dependencies})
+ament_export_targets("export_${PROJECT_NAME}")
+
 ament_package()
