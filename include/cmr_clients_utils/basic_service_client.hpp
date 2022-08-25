@@ -39,7 +39,6 @@ class BasicServiceClient {
     if (rclcpp::spin_until_future_complete(client_node_, res) ==
         rclcpp::FutureReturnCode::SUCCESS)
     {
-      RCLCPP_INFO(rclcpp::get_logger(client_node_name_), "Successfully called service!");
       return res.get();
     }
     
