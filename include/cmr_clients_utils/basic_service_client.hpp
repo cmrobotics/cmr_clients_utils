@@ -36,7 +36,7 @@ class BasicServiceClient {
     if (!is_server_ready()) return nullptr;
 
     auto res = service_client_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(client_node_, res) ==
+    if (rclcpp::spin_until_future_complete(client_node_, res, service_timeout_) ==
         rclcpp::FutureReturnCode::SUCCESS)
     {
       return res.get();
